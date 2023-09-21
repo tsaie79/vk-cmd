@@ -1,0 +1,32 @@
+# write a pod to test the volume
+apiVersion: v1
+kind: Pod
+
+metadata:
+#set name as the JOBNAME
+  name: vk-nersc0
+spec:
+  containers:
+  - name: test-shell
+    image: fake
+    command:
+      # Case: ifarm - Apptainer, access to $HOME, pipe needed (no need to mount pipe, just access to ~/hostpipe/vk-cmd), access hostnework directly, define env on host shell:
+      # - "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
+
+      # Case: jiriaf or my linux - Docker, no access to $HOME, pipe needed, hostnetwork needed, define env on docker:  
+      - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls / > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for docker, pipe needed.
+
+      # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
+      # - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls ~/ > ~/xx.txt' > ~/hostpipe/vk-cmd"
+
+      #other
+      # - "ls -l . > ~/xx.txt"
+
+ 
+  nodeSelector:
+    kubernetes.io/hostname: vk-nersc0 #JOBNAME
+
+  tolerations:
+  - key: "virtual-kubelet.io/provider"
+    value: "mock"
+    effect: "NoSchedule"
