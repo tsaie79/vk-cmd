@@ -9,4 +9,4 @@ export KUBELET_PORT="10250"
 
 echo "{\"$JOBNAME\": {\"cpu\": \"0\", \"memory\": \"0Gi\", \"pods\": \"0\"}}" > $HOME/.host-cfg.json
 
-"$VK_PATH/virtual-kubelet" --nodename $JOBNAME --provider mock --provider-config $HOME/.host-cfg.json --startup-timeout 10s --log-level debug --klog.v 10
+"$VK_PATH/virtual-kubelet" --nodename $JOBNAME --provider mock --provider-config $HOME/.host-cfg.json --klog.v 3

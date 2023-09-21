@@ -4,7 +4,7 @@ kind: Pod
 
 metadata:
 #set name as the JOBNAME
-  name: vk-nersc0
+  name: vk-test
 spec:
   containers:
   - name: test-shell
@@ -14,17 +14,17 @@ spec:
       # - "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
 
       # Case: jiriaf or my linux - Docker, no access to $HOME, pipe needed, hostnetwork needed, define env on docker:  
-      - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls / > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for docker, pipe needed.
+      # - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls / > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for docker, pipe needed.
 
       # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
       # - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls ~/ > ~/xx.txt' > ~/hostpipe/vk-cmd"
 
       #other
-      # - "ls -l . > ~/xx.txt"
+      - "sls -l . > ~/xx.txt"
 
  
   nodeSelector:
-    kubernetes.io/hostname: vk-nersc0 #JOBNAME
+    kubernetes.io/hostname: vk-test #JOBNAME
 
   tolerations:
   - key: "virtual-kubelet.io/provider"
