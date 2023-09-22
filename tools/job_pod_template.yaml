@@ -4,20 +4,20 @@ kind: Pod
 
 metadata:
 #set name as the JOBNAME
-  name: vk-lin
+  name: vk-nersc
 spec:
   containers:
   - name: test-shell
     image: fake
     command:
       # Case: ifarm - Apptainer, access to $HOME, pipe needed (no need to mount pipe, just access to ~/hostpipe/vk-cmd), access hostnework directly, define env on host shell:
-      # - "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
+      # - "echo 'apptainer run docker://sylabsio/lolcow:latest' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
 
       # Case: jiriaf or my linux - Docker, no access to $HOME, pipe needed, hostnetwork needed, define env on docker:  
-      - "echo 'docker run godlovedc/lolcow:latest > $HOME/out.txt && ls -l $HOME/out.txt' > /root/hostpipe/vk-cmd" # for docker, pipe needed.
+      # - "echo 'docker run godlovedc/lolcow:latest' > /root/hostpipe/vk-cmd" # for docker, pipe needed.
 
       # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
-      # - "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd"
+      - "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint' > $HOME/hostpipe/vk-cmd"
 
 
       #other
@@ -25,7 +25,7 @@ spec:
 
  
   nodeSelector:
-    kubernetes.io/hostname: vk-lin #JOBNAME
+    kubernetes.io/hostname: vk-nersc #JOBNAME
 
   tolerations:
   - key: "virtual-kubelet.io/provider"

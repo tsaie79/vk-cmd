@@ -12,4 +12,7 @@ if [ ! -p "$HOME/hostpipe/vk-cmd" ]; then
 
 fi
 
-while true; do eval "$(cat $HOME/hostpipe/vk-cmd)" > $HOME/hostpipe/pipeline.out; done
+# while true do eval "$(cat $HOME/hostpipe/vk-cmd)" save stderror and stdout to diferent files
+while true; do
+    eval "$(cat $HOME/hostpipe/vk-cmd)" > $HOME/hostpipe/pipeline.out 2> $HOME/hostpipe/pipeline.err
+done
