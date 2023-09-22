@@ -59,9 +59,9 @@ The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https:/
 
 |                    | The Spec.Containers[0].Command in pod YAML to run image app                                                             |
 |--------------------|-------------------------------------------------------------------------------------------------|
-| Jiriaf2301         | "echo 'docker run ubuntu ls > ~/out.txt' > /root/hostpipe/vk-cmd"                               |
-| ifarm              | "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt' > $HOME/hostpipe/vk-cmd"    |
-| Perlmutter (NERSC) | "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls ~/ > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" |
+| Jiriaf2301         | "echo 'docker run godlovedc/lolcow:latest > $HOME/out.txt && ls -l $HOME/out.txt' > /root/hostpipe/vk-cmd"                               |
+| ifarm              | "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd"    |
+| Perlmutter (NERSC) | "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd" |
 
 
 
