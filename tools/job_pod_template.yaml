@@ -4,27 +4,28 @@ kind: Pod
 
 metadata:
 #set name as the JOBNAME
-  name: vk-test
+  name: vk-lin
 spec:
   containers:
   - name: test-shell
     image: fake
     command:
       # Case: ifarm - Apptainer, access to $HOME, pipe needed (no need to mount pipe, just access to ~/hostpipe/vk-cmd), access hostnework directly, define env on host shell:
-      # - "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
+      # - "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
 
       # Case: jiriaf or my linux - Docker, no access to $HOME, pipe needed, hostnetwork needed, define env on docker:  
-      # - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls / > $HOME/out.txt' > $HOME/hostpipe/vk-cmd" # for docker, pipe needed.
+      - "echo 'docker run godlovedc/lolcow:latest > $HOME/out.txt && ls -l $HOME/out.txt' > /root/hostpipe/vk-cmd" # for docker, pipe needed.
 
       # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
-      # - "echo 'shifter --image=jlabtsai/nersc-test:v1.0 ls ~/ > ~/xx.txt' > ~/hostpipe/vk-cmd"
+      # - "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd"
+
 
       #other
-      - "sls -l . > ~/xx.txt"
+      # - "sls -l . > ~/xx.txt"
 
  
   nodeSelector:
-    kubernetes.io/hostname: vk-test #JOBNAME
+    kubernetes.io/hostname: vk-lin #JOBNAME
 
   tolerations:
   - key: "virtual-kubelet.io/provider"

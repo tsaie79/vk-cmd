@@ -51,7 +51,7 @@ The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https:/
 |--------------------|:---------------------------------------------:|:--------------------------------:|:---------------------:|:-------------------------------------------------------------------------------------------------------:|:----------------------------------------------------:|
 | Jiriaf2301         | Build SSH tunnel from worker to control plane | Build pipeline in the background | setenv JOBNAME vk-xxx | docker run -d -v $HOME/hostpipe:/root/hostpipe --network="host" -e JOBNAME=$JOBNAME jlabtsai/vk-cmd:tag |                                                      |
 | ifarm              |                                               |                                  |                       | apptainer run docker://jlabtsai/vk-cmd:tag                                                              |                                                      |
-| Perlmutter (NERSC) |                                               |                                  | export JOBNAME=vk-xxx | shifterimg pull jlabtsai/vk-cmd:tag                                                                     | shifter --image=jlabtsai/vk-cmd:tag /vk-cmd/start.sh |
+| Perlmutter (NERSC) |                                               |                                  | export JOBNAME=vk-xxx | shifterimg pull jlabtsai/vk-cmd:tag                                                                     | shifter --image=jlabtsai/vk-cmd:tag --entrypoint |
 
 
 
