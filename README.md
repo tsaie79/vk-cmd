@@ -1,8 +1,6 @@
 # Intro
 This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to the host shell commands. It is not running a container, but running shell commands on the host. This is based on the Virtual Kubelet (vk-mock) and is designed for running on various resources where a user can't reach the container runtime directly. We reference the Virtual Kubelet (vk-mock) and KinD to build this package.
 
-The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https://github.com/virtual-kubelet/virtual-kubelet) and is stored at https://github.com/tsaie79/virtual-kubelet-cmd. The image of vk-cmd is built by Dockerfile in this repo. The image is stored at https://hub.docker.com/repository/docker/jlabtsai/vk-cmd.
-
 # Build image
 - Config file of apiserver (control plane) is located at docker `/images/base/activate/config`. 
     - Port, cert and key are set by KinD (`~/.kube/config`), as an example. These require to be set by users when building this image.
@@ -66,6 +64,8 @@ The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https:/
 
 
 # Reference
+The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https://github.com/virtual-kubelet/virtual-kubelet) and is stored at https://github.com/tsaie79/virtual-kubelet-cmd. The image of vk-cmd is built by Dockerfile in this repo. The image is stored at https://hub.docker.com/repository/docker/jlabtsai/vk-cmd.
+
 - This package is based on Virtual Kubelete - https://github.com/virtual-kubelet/virtual-kubelet.
-- Vk-cmd is based on vk-mock in the above repo and stored in: https://github.com/tsaie79/vk-mock.
+- Vk-cmd is based on vk-mock in the above repo and stored in: https://github.com/tsaie79/virtual-kubelet-cmd.
 - Dockerfile is built referenced by KinD - https://github.com/kubernetes-sigs/kind.
