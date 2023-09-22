@@ -12,4 +12,4 @@ if [ ! -p "$HOME/hostpipe/vk-cmd" ]; then
 
 fi
 
-while true; do eval "$(cat $HOME/hostpipe/vk-cmd)" &> $HOME/hostpipe/pipeline.out; done
+while true; do eval "$(cat $HOME/hostpipe/vk-cmd)" >> $HOME/hostpipe/pipeline.out; done
