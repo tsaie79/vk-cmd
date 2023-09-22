@@ -49,7 +49,7 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
 |--------------------|-----------------------------------------------|----------------------------------|-----------------------|---------------------------------------------------------------------------------------------------------|
 | Jiriaf2301         | Build SSH tunnel from worker to control plane | Build pipeline in the background | setenv JOBNAME vk-xxx | docker run -d -v $HOME/hostpipe:/root/hostpipe --network="host" -e JOBNAME=$JOBNAME jlabtsai/vk-cmd:tag |
 | ifarm              |                                               |                                  |                       | apptainer run docker://jlabtsai/vk-cmd:tag                                                              |
-| Perlmutter (NERSC) |                                               |                                  | export JOBNAME=vk-xxx | shifter --image=docker://jlabtsai/vk-cmd:tag --entrypoint                                               |
+| Perlmutter (NERSC) |                                               |                                  | export JOBNAME=vk-xxx | shifter --image=docker:jlabtsai/vk-cmd:tag --entrypoint                                               |
 
 
 
