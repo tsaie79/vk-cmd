@@ -1,7 +1,7 @@
 # Intro
 This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to the host shell commands. It is not running a container, but running shell commands on the host. This is based on the Virtual Kubelet (vk-mock) and is designed for running on various resources where a user can't reach the container runtime directly. We reference the Virtual Kubelet (vk-mock) and KinD to build this package.
 
-The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https://github.com/virtual-kubelet/virtual-kubelet) and is stored at https://github.com/tsaie79/vk-mock. The image of vk-cmd is built by Dockerfile in this repo. The image is stored at https://hub.docker.com/repository/docker/jlabtsai/vk-cmd.
+The implementation of vk-cmd is based on the Virtual Kubelet (vk-mock in https://github.com/virtual-kubelet/virtual-kubelet) and is stored at https://github.com/tsaie79/virtual-kubelet-cmd. The image of vk-cmd is built by Dockerfile in this repo. The image is stored at https://hub.docker.com/repository/docker/jlabtsai/vk-cmd.
 
 # Build image
 - Config file of apiserver (control plane) is located at docker `/images/base/activate/config`. 
