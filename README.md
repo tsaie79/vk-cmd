@@ -57,9 +57,9 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
 
 |                    | The Spec.Containers[0].Command in pod YAML to run image app                                                             |
 |--------------------|-------------------------------------------------------------------------------------------------|
-| Jiriaf2301         | "echo 'docker run godlovedc/lolcow:latest > $HOME/out.txt && ls -l $HOME/out.txt' > /root/hostpipe/vk-cmd"                               |
-| ifarm              | "echo 'apptainer exec lolcow_latest.sif cowsay moo > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd"    |
-| Perlmutter (NERSC) | "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint > $HOME/out.txt && ls -l $HOME/out.txt' > $HOME/hostpipe/vk-cmd" |
+| Jiriaf2301         | "echo 'docker run godlovedc/lolcow:latest' > /root/hostpipe/vk-cmd"                               |
+| ifarm              | "echo 'apptainer run docker://sylabsio/lolcow:latest' > $HOME/hostpipe/vk-cmd"   |
+| Perlmutter (NERSC) | "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint' > $HOME/hostpipe/vk-cmd" |
 
 
 
