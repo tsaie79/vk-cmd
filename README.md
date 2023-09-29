@@ -17,8 +17,8 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
     - Docker command of binding volumes: `docker -v $HOME/hostpipe:/path/to/pipeline/in/container`.
     - Notice that some resources bind `$HOME` automatically; thus one doesn't need to bind pipeline if it's located under `$HOME`. (see Columns 2 and 3 in Table 1)
 
-- Set unique env variable `$JOBNAME`. This sets the name of worker node in Kubernetes cluster, and it is used for job pod names that must be unique.
-    - Convey env variables to a docker container, e.g. `docker -e JOBNAME="vk-xxx"` (vk-xxx is required, but xxx can be any string)
+- Set unique env variable `$NODENAME`. This sets the name of worker node in Kubernetes cluster, and it must be unique.
+    - Convey env variables to a docker container, e.g. `docker -e NODENAME="vk-xxx"` (vk-xxx is required, but xxx can be any string)
     - Notice that some resources allow a container to share env variables with its host. (see Column 5 in Table 1)
 
 
@@ -26,7 +26,7 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
 
 # Deploy job pods
 - Refer to `toos/job_pod_template.yaml`.
-- Set `Metadata.Name` (pod name) and `Sepc.NodeSelector.Kubernetes.io/hostname` in YAML as the `$JOBNAME`, to prevent conflict when launching new jobs.
+- Set `Metadata.Name` (job-name/pod-name) and `Sepc.NodeSelector.Kubernetes.io/role` in YAML as the `agent`, to prevent launching pods in control plane.
 - Assign shell commands at the key of `Spec.containers[0].Command` in YAML.
     - See Table 3.
     - Notice that if `$HOME` is mounted and bound automatically, then `$HOME` in the container is the same as that in the host.
@@ -47,9 +47,9 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
 
 |                    | Step 0                                        | Step 1                           | Step 2                | Step 3                                                                                                  |
 |--------------------|-----------------------------------------------|----------------------------------|-----------------------|---------------------------------------------------------------------------------------------------------|
-| Jiriaf2301         | Build SSH tunnel from worker to control plane | Build pipeline in the background | setenv JOBNAME vk-xxx | docker run -d -v $HOME/hostpipe:/root/hostpipe --network="host" -e JOBNAME=$JOBNAME jlabtsai/vk-cmd:tag |
+| Jiriaf2301         | Build SSH tunnel from worker to control plane | Build pipeline in the background | setenv NODENAME vk-xxx | docker run -d -v $HOME/hostpipe:/root/hostpipe --network="host" -e NODENAME=$NODENAME jlabtsai/vk-cmd:tag |
 | ifarm              |                                               |                                  |                       | apptainer run docker://jlabtsai/vk-cmd:tag                                                              |
-| Perlmutter (NERSC) |                                               |                                  | export JOBNAME=vk-xxx | shifter --image=docker:jlabtsai/vk-cmd:tag --entrypoint                                               |
+| Perlmutter (NERSC) |                                               |                                  | export NODENAME=vk-xxx | shifter --image=docker:jlabtsai/vk-cmd:tag --entrypoint                                               |
 
 
 
