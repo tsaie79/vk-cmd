@@ -2,7 +2,6 @@
 ARG BASE_IMAGE=debian:bullseye-slim
 FROM $BASE_IMAGE as base
 
-
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE as go-build
 COPY --chmod=0755 files/usr/local/bin/* /usr/local/bin/
 COPY --chmod=0755 scripts/third_party/gimme/gimme /usr/local/bin/
@@ -22,7 +21,7 @@ RUN eval "$(gimme "${GO_VERSION}")" \
 FROM go-build as build-vk-cmd
 ARG VK_CMD_REPO_URL="https://github.com/tsaie79/virtual-kubelet-cmd.git"
 ARG TARGETARCH GO_VERSION
-RUN git clone "${VK_CMD_REPO_URL}" /vk-cmd \
+RUN git clone -b master "${VK_CMD_REPO_URL}" /vk-cmd \
     && cd /vk-cmd \
     && eval "$(gimme "${GO_VERSION}")" \
     && export GOARCH=$TARGETARCH \
