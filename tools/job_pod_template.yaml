@@ -1,10 +1,9 @@
 # write a pod to test the volume
 apiVersion: v1
 kind: Pod
-
 metadata:
 #set name as the JOBNAME
-  name: vk-jiriaf
+  name: job-name
 spec:
   containers:
   - name: test-shell
@@ -14,19 +13,24 @@ spec:
       # - "echo 'apptainer run docker://sylabsio/lolcow:latest' > $HOME/hostpipe/vk-cmd" # for apptainer, pipe needed. (ifarm)
 
       # Case: jiriaf or my linux - Docker, no access to $HOME, pipe needed, hostnetwork needed, define env on docker:  
-      - "echo 'docker run godlovedc/lolcow:latest' > /root/hostpipe/vk-cmd" # for docker, pipe needed.
+      # - "echo 'docker run godlovedc/lolcow:latest' > /root/hostpipe/vk-cmd" # for docker, pipe needed.
 
       # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
       # - "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint' > $HOME/hostpipe/vk-cmd"
 
-
       #other
-      # - "sls -l . > ~/xx.txt"
-
+      - "ls -l . && sleep 1000 > ~/xx.txt"
+    resources:
+      limits: 
+        cpu: 1 #upper limit
+        # memory: 500Mi
+      requests:
+        cpu: 1 #lower limit
+        # memory: 200Mi
  
+# dont use control-plane node
   nodeSelector:
-    kubernetes.io/hostname: vk-jiriaf #JOBNAME
-
+    kubernetes.io/role: agent
   tolerations:
   - key: "virtual-kubelet.io/provider"
     value: "mock"
