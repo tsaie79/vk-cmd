@@ -19,7 +19,7 @@ spec:
       # - "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint' > $HOME/hostpipe/vk-cmd"
 
       #other
-      - "ls -l . && sleep 1000 > ~/xx.txt"
+      - "ls -l . > ~/test.txt && sleep 1000"
     resources:
       limits: 
         cpu: 1 #upper limit
