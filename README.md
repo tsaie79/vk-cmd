@@ -1,36 +1,50 @@
 # Intro
-This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to the host shell commands. It is not running a container, but running shell commands on the host. This is based on the Virtual Kubelet (vk-mock) and is designed for running on various resources where a user can't reach the container runtime directly. We reference the Virtual Kubelet (vk-mock) and KinD to build this package.
+This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to the host shell commands. It is not running a container, but running shell commands on the host. This is based on the Virtual Kubelet (vk-mock) and is designed for running on various compute sites where a user can't reach the container runtime directly. We reference the Virtual Kubelet (vk-mock) and KinD to build this package.
 
 # Build image
 - Config file of apiserver (control plane) is located at docker `/images/base/activate/config`. 
     - Port, cert and key are set by KinD (`~/.kube/config`), as an example. These require to be set by users when building this image.
     - URL of apiserver is set to `127.0.0.1` implying that building a ssh tunnel mapping from vk to control plane is required.
 - `Client.crt` and `client.key` are equired but not used in this package. These are created by `tools/create-client-cert.sh`.
-- Dockerfile is located at `docker/images/base/Dockerfile`.
-    - Build the docker image by Makefile. (`make quick`)
+- Dockerfile is located at `docker/images/base/Dockerfile`. Build the docker image by Makefile. 
+    ```bash
+    make quick
+    ```
 
 # Launch vk-cmd
-- Build a ssh tunnel mapping from vk to control plane. (`ssh -NfL localhost:port1:localhost:port xxx@control-plane`).
-    - If host network is not available, use `docker --network="host"`. (need higher credential) (see Column 4 in Table 1)
+- Build a ssh tunnel mapping from vk to control plane. 
+    ```bash
+    ssh -NfL localhost:port1:localhost:port xxx@control-plane
+    ```
+    - If host network is not available, use `docker --network="host"`. This is not recommended for security reason. (see Column 4 in Table 1)
 
-- Build pipeline for executing commands on the host within the container, see `tools/pipeline/README.md`. 
-    - Docker command of binding volumes: `docker -v $HOME/hostpipe:/path/to/pipeline/in/container`.
-    - Notice that some resources bind `$HOME` automatically; thus one doesn't need to bind pipeline if it's located under `$HOME`. (see Columns 2 and 3 in Table 1)
+- Build UNIX pipe for executing commands on the host within the container, see `tools/pipeline/README.md`. 
+    - Docker command of binding volumes: 
+        ```bash
+        docker -v $HOME/hostpipe:/path/to/pipeline/in/container`
+        ```   
+    - Notice that some compute sites bind `$HOME` automatically; thus one doesn't need to bind pipeline if it's located under `$HOME`. (see Columns 2 and 3 in Table 1)
 
-- Set unique env variable `$NODENAME`. This sets the name of worker node in Kubernetes cluster, and it must be unique.
-    - Convey env variables to a docker container, e.g. `docker -e NODENAME="vk-xxx"` (vk-xxx is required, but xxx can be any string)
-    - Notice that some resources allow a container to share env variables with its host. (see Column 5 in Table 1)
-
-
+- Set unique env variable `$NODENAME`. This sets the name of worker node in Kubernetes cluster and must be unique.
+    - Convey env variables to a docker container, e.g.,
+        ```bash
+        docker -e NODENAME="vk-xxx" (vk-xxx is required, but xxx can be any string)
+        ```
+    - Notice that some compute sites allow a container to share env variables with its host. (see Column 5 in Table 1)
 - Run vk-cmd by various commands; see Table 2.
 
 # Deploy job pods
 - Refer to `toos/job_pod_template.yaml`.
 - Set `Metadata.Name` (job-name/pod-name) and `Sepc.NodeSelector.Kubernetes.io/role` in YAML as the `agent`, to prevent launching pods in control plane.
+- Resources are set by `Spec.Containers[0].Resources.L` in YAML.
+    - `Limits` and `Requests` are the upper and lower bounds of resources, respectively.
 - Assign shell commands at the key of `Spec.containers[0].Command` in YAML.
     - See Table 3.
     - Notice that if `$HOME` is mounted and bound automatically, then `$HOME` in the container is the same as that in the host.
-- Launch job pod on control plane: `kubectl apply -f job_pod_template.yaml`.
+- Launch job pod on control plane: 
+    ```bash
+    kubectl apply -f job_pod_template.yaml
+    ```
 
     
 
