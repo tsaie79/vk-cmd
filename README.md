@@ -78,9 +78,4 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
 
 
 # Reference
-The implementation of vk-cmd is based on the mock provider in Virtual Kubelet[1]. The source code of this repo is stored in [2]. The image of vk-cmd is built by Dockerfile in this repo and refer to KinD [3]. The image is stored in [4].
-
-- [1] https://github.com/virtual-kubelet/virtual-kubelet.
-- [2] https://github.com/tsaie79/virtual-kubelet-cmd.
-- [3] https://github.com/kubernetes-sigs/kind.
-- [4] https://hub.docker.com/repository/docker/jlabtsai/vk-cmd.
+The implementation of vk-cmd is based on the mock provider in [Virtual Kubelet](https://github.com/virtual-kubelet/virtual-kubelet.). The source code of this repo is stored in [vk-cmd](https://github.com/tsaie79/virtual-kubelet-cmd). The image of vk-cmd is built by Dockerfile in this repo and refer to [KinD](https://github.com/kubernetes-sigs/kind). The image is stored in [dockerhub](https://hub.docker.com/repository/docker/jlabtsai/vk-cmd).
