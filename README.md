@@ -35,10 +35,10 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
 
 # Deploy job pods
 - Refer to `toos/job_pod_template.yaml`.
-- Set `Metadata.Name` (job-name/pod-name) and `Sepc.NodeSelector.Kubernetes.io/role` in YAML as the `agent`, to prevent launching pods in control plane.
-- Resources are set by `Spec.Containers[0].Resources.L` in YAML.
-    - `Limits` and `Requests` are the upper and lower bounds of resources, respectively.
-- Assign shell commands at the key of `Spec.containers[0].Command` in YAML.
+- Set `metadata:name` (job-name/pod-name) and `sepc:nodeSelector:kubernetes.io/role` in YAML as the `agent`, to prevent launching pods in control plane.
+- Resources are set by `spec:containers:0:resources:` in YAML.
+    - `limits` and `requests` are the upper and lower bounds of resources, respectively.
+- Assign shell commands at the key of `spec:containers:0:command` in YAML.
     - See Table 3.
     - Notice that if `$HOME` is mounted and bound automatically, then `$HOME` in the container is the same as that in the host.
 - Launch job pod on control plane: 
