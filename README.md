@@ -31,7 +31,8 @@ This vk-cmd is a Virtual Kubelet that translates the commands from Kubernetes to
         docker -e NODENAME="vk-xxx" (vk-xxx is required, but xxx can be any string)
         ```
     - Notice that some compute sites allow a container to share env variables with its host. (see Column 5 in Table 1)
-- Run vk-cmd by various commands; see Table 2.
+- Run vk-cmd with various commands; see Table 2.
+- Supplemental bash scripts are located at `run/`.
 
 # Deploy job pods
 - Refer to `toos/job_pod_template.yaml`.
