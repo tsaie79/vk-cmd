@@ -81,7 +81,7 @@ To deploy job pods, follow these steps:
 
 
 ## Use kubernetes API to get information about the cluster
-- Please see `tools/kubernetes-api/readme.md` for details.
+Please see `tools/kubernetes-api/readme.md` for details.
 
 
 ## References
