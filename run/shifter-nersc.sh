@@ -5,5 +5,5 @@
 ssh -NfL 42053:localhost:42053 tsai@jiriaf2301.jlab.org
 sh docker_img/build-pipe.sh &
 
-export JOBNAME="vk-swif-nersc"
+export NODENAME="vk-swif-nersc"
 shifter --image=docker:jlabtsai/vk-cmd:latest --entrypoint
