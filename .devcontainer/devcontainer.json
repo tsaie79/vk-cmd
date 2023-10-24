@@ -8,7 +8,8 @@
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/devcontainers/features/go:1": {},
-		"ghcr.io/devcontainers-contrib/features/kind:1": {}
+		"ghcr.io/devcontainers-contrib/features/kind:1": {},
+		"ghcr.io/devcontainers-contrib/features/kubectl-asdf:2": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -16,13 +17,19 @@
 				"GitHub.copilot"
 			]
 		}
-	}
+	},
+
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "docker --version",
+	"postCreateCommand": [
+		"kind create cluster", "cp ~/.kube/config /workspaces/vk-cmd/docker/images/base/activate/apiserver", 
+		"cd /workspaces/vk-cmd/docker/images/base/Makefile", "make quick",
+		"export NODENAME='vk-prom'",
+		"sh /workspaces/vk-cmd/tools/pipeline/build_pipline_host.sh",
+	],
 
 	// Configure tool-specific properties.
 	// "customizations": {},
