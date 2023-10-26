@@ -15,7 +15,7 @@ setsid shifter --image=docker:jlabtsai/read-resources:latest -- stress-ng -c 2 -
 ```
 
 ## 2. Find the PIDs of all processes in the container
-The `pid.out` file contains the **PID/PID-1** of the leader process of the container. To find the PIDs of all processes in the container, run the following command:
+The `pid.out` file contains the **PID/PID-1** of the leader process of the container. To find the PIDs of all processes (including the leader) in the container, run the following command:
 ```
 pgrep -s $(cat pid.out)
 ```
