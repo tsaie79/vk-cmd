@@ -20,6 +20,13 @@
 		}
 	},
 
+	"runArgs": [
+		"--network=host",
+	],
+	
+	"mounts": [
+		"source=${localEnv:HOME}/.kube,target=/home/vscode/kube_config,type=bind,consistency=cached",
+	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
