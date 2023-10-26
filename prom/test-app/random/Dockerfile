@@ -8,4 +8,5 @@ COPY gen-random.sh /gen-random.sh
 #run gen-random.sh when container launches
 RUN chmod +x /gen-random.sh
 
-CMD ["./gen-random.sh"]
+ENTRYPOINT ["/gen-random.sh"]
+
