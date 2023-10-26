@@ -1,0 +1,28 @@
+# write a pod to test the volume
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random
+spec:
+  containers:
+  - name: test-shell
+    image: fake
+    command:
+      # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
+    - "echo 'setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint & echo $! >> ~/pid.out' > $HOME/hostpipe/vk-cmd"
+
+    resources:
+      limits: 
+        cpu: 1 #upper limit
+        # memory: 4Gi
+      requests:
+        cpu: 1 #lower limit
+        # memory: 4Gi
+ 
+# dont use control-plane node
+  nodeSelector:
+    kubernetes.io/role: agent
+  tolerations:
+  - key: "virtual-kubelet.io/provider"
+    value: "mock"
+    effect: "NoSchedule"
