@@ -13,14 +13,11 @@ scrape_configs:
 
 
   # add process exporter
-- job_name: 'process_exporter'
+- job_name: 'process_exporter1'
   static_configs:
   - targets: ['localhost:9256']
 
-  # add node exporter
-- job_name: 'node_exporter'
+- job_name: 'process_exporter2'
   static_configs:
-  - targets: ['localhost:9100']
-
-  # add blackbox exporter
+  - targets: ['localhost:9257']
   
