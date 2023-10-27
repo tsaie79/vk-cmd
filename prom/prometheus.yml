@@ -7,17 +7,8 @@ scrape_configs:
   static_configs:
   - targets: ['localhost:9090']
 
-- job_name: "demo"
-  static_configs:
-  - targets: ['demo.promlabs.com:10000']
-
-
   # add process exporter
-- job_name: 'process_exporter1'
+- job_name: 'process_exporter'
   static_configs:
-  - targets: ['localhost:9256']
-
-- job_name: 'process_exporter2'
-  static_configs:
-  - targets: ['localhost:9257']
+  - targets: ['localhost:1914', 'localhost:1913']
   
