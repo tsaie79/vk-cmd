@@ -13,10 +13,15 @@ ADD . .
 RUN CGO_ENABLED=0 GOARCH=$TARGETARCH make build
 
 
-FROM scratch
-# Copy the process-exporter binary from the build stage.
+FROM base as run_process_exporter
 COPY --from=process_exporter_build /go/src/github.com/ncabatoff/process-exporter/process-exporter /bin/process-exporter
-# Run the process-exporter command by default when the container starts.
-ENTRYPOINT ["/bin/process-exporter"]
+COPY config.yml /config.yml 
+COPY exe.sh /exe.sh
+RUN chmod +x /exe.sh
+
+
+FROM scratch
+COPY --from=run_process_exporter / /
+ENTRYPOINT ["/exe.sh"]
 
 #------------------ Above is from procee-exporter ------------------
