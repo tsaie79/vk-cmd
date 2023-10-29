@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Pod
 metadata:
 #set name as the JOBNAME
-  name: random
+  name: job-exporter
 spec:
   containers:
   - name: test-shell
@@ -12,8 +12,11 @@ spec:
 
 
       # Case: NERSC - Shifter, access to $HOME, pipe needed (no mount needed), access hostnetwork directly, define env on host shell:
-      - "echo 'setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint & echo $! > ~/pid.out' > $HOME/hostpipe/vk-cmd"
-
+      # - "echo 'setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint & echo $! > ~/pid.out' > $HOME/hostpipe/vk-cmd"
+      - "echo '(setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &) && (export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)' > $HOME/hostpipe/vk-cmd"
+      #testing
+      # - "echo '(setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER && shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint' > $HOME/hostpipe/vk-cmd"
+ 
     resources:
       limits: 
         cpu: 1 #upper limit
