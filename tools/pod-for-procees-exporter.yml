@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Pod
 metadata:
 #set name as the JOBNAME
-  name: stress
+  name: random
 spec:
   containers:
   - name: test-shell
