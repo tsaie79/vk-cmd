@@ -15,14 +15,18 @@ RUN CGO_ENABLED=0 GOARCH=$TARGETARCH make build
 
 FROM base as run_process_exporter
 COPY --from=process_exporter_build /go/src/github.com/ncabatoff/process-exporter/process-exporter /bin/process-exporter
-COPY config.yml /config.yml 
-# copy python.py
+COPY process-exporter-config.yml $HOME/config.yml 
+COPY get_cmds.sh /get_cmds.sh
+RUN chmod +x /get_cmds.sh
+
 COPY exe.sh /exe.sh
 RUN chmod +x /exe.sh
 
-
-FROM scratch
+FROM base
 COPY --from=run_process_exporter / /
+RUN apt-get update && apt-get install procps -y
+
+
 ENTRYPOINT ["/exe.sh"] 
 
 #------------------ Above is from procee-exporter ------------------

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t jlabtsai/process-exporter:v0.1 --no-cache .
+docker build -t jlabtsai/process-exporter:v1.0 --no-cache .

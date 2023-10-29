@@ -9,6 +9,5 @@ do
     echo $cmd
 
     sed -i "s/comm:/&\n  - \"$cmd\"/" $HOME/config.yml
-
 done
 
