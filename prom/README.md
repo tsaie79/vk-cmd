@@ -37,7 +37,7 @@ The process-exporter image used in this example is built from the Dockerfile in 
 
 The following commands are used to launch the user's pod and the process-exporter container.
 It is a **one liner command** in the `command` field of the pod configuration file. 
-Here, we decompose it into **3 parts** for clarity.
+Here, we decompose it into **3 parts** for clarity. The example pod configuration file is `pod-for-procees-exporter.yml`.
 
 
 1. When user's pod is launched via `vk-cmd`, the `$HOME/pid.out` must be created and the PID of the leader process of the pod must be written to it. 
