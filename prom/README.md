@@ -35,27 +35,28 @@ The process-exporter image used in this example is built from the Dockerfile in 
 
 ## Commands in the user's pod configuration file (pod.yml)
 
+The following commands are used to launch the user's pod and the process-exporter container.
+It is a **one liner command** in the `command` field of the pod configuration file. 
+Here, we decompose it into **3 parts** for clarity.
+
+
 1. When user's pod is launched via `vk-cmd`, the `$HOME/pid.out` must be created and the PID of the leader process of the pod must be written to it. 
 
 ```
-The 1st part of `command` in the `pod.yml` file must be:
-
 (setsid shifter --image=docker:jlabtsai/stress:v20231026 --entrypoint& echo $! > ~/pid.out)
 ```
 
-2. Launch the process-exporter container with the following command with the environment variables set:
+2. Launch the process-exporter container with the environment variables set.
+    
+```
+(export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &)
+```
 ```
 PROCESS_EXPORTER_PORT: export the port number of the process-exporter container
 PROM_SERVER: export the address of the prometheus server
 ```
-```
-The 2nd part of `command` in the `pod.yml` file must be:
 
-(export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &)
-```
 3. Port-forward the process-exporter port to the host. 
 ```
-The 3rd part of `command` in the `pod.yml` file must be:
-
 (export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)
 ```
