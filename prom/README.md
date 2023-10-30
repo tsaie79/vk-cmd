@@ -24,7 +24,7 @@ pgrep -s $(cat pid.out)
 - If the container is launched directly from `shifter` on the shell, then `number-in-pid.out + 1` is the PID of the leader process of the container.
 
 
-# Custom process-exporter image
+# Run process-exporter along with the user's pod
 The process-exporter image used in this example is built from the Dockerfile in this directory. This works with the existing file containing the leader PID of the container. If the file is not present, the process-exporter will not work.
 
 ## Files to build the process-exporter image
@@ -33,7 +33,7 @@ The process-exporter image used in this example is built from the Dockerfile in 
 3. `process-exporter-config.yml` is the template of configuration file for the process-exporter.
 
 
-## Commands in the user's pod configuration file (pod.yml)
+## Commands in the user's pod configuration file
 
 The following commands are used to launch the user's pod and the process-exporter container.
 It is a **one liner command** in the `command` field of the pod configuration file. 
