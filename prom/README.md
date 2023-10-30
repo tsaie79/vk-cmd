@@ -22,3 +22,40 @@ pgrep -s $(cat pid.out)
 **Warning**: `pid.out` gives 2 numbers based on the scenario.
 - If the container is launche via `vk-cmd`, then it is the PID of the leader process of the container.
 - If the container is launched directly from `shifter` on the shell, then `number-in-pid.out + 1` is the PID of the leader process of the container.
+
+
+# Custom process-exporter image
+The process-exporter image used in this example is built from the Dockerfile in this directory. This works with the existing file containing the leader PID of the container. If the file is not present, the process-exporter will not work.
+
+## Files to build the process-exporter image
+1. `get_cmd.sh` is used to generate the configuration file for the process-exporter. 
+2. `exe.sh` is the main script running the process exporter.
+3. `process-exporter-config.yml` is the template of configuration file for the process-exporter.
+
+
+## Commands in the user's pod configuration file (pod.yml)
+
+1. When user's pod is launched via `vk-cmd`, the `$HOME/pid.out` must be created and the PID of the leader process of the pod must be written to it. 
+
+```
+The 1st part of `command` in the `pod.yml` file must be:
+
+(setsid shifter --image=docker:jlabtsai/stress:v20231026 --entrypoint& echo $! > ~/pid.out)
+```
+
+2. Launch the process-exporter container with the following command with the environment variables set:
+```
+PROCESS_EXPORTER_PORT: export the port number of the process-exporter container
+PROM_SERVER: export the address of the prometheus server
+```
+```
+The 2nd part of `command` in the `pod.yml` file must be:
+
+(export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &)
+```
+3. Port-forward the process-exporter port to the host. 
+```
+The 3rd part of `command` in the `pod.yml` file must be:
+
+(export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)
+```
