@@ -19,18 +19,18 @@ The `pid.out` file contains the **PID/PID-1** of the leader process of the conta
 ```
 pgrep -s $(cat pid.out)
 ```
-**Warning**: `pid.out` gives 2 numbers based on the scenario.
+**Warning**: The number shown in `pid.out` can represent different things:
 - If the container is launche via `vk-cmd`, then it is the PID of the leader process of the container.
 - If the container is launched directly from `shifter` on the shell, then `number-in-pid.out + 1` is the PID of the leader process of the container.
 
 
 # Run process-exporter along with the user's pod
-The process-exporter image used in this example is built from the Dockerfile in this directory. This works with the existing file containing the leader PID of the container. If the file is not present, the process-exporter will not work.
+The process-exporter image used in this example is built from the Dockerfile in this directory. This works with the existing file `$HOME/pid.out` containing the leader PID of the container when launching the pod. If the file is not present, the process-exporter will not work.
 
 ## Files to build the process-exporter image
-1. `get_cmd.sh` is used to generate the configuration file for the process-exporter. 
-2. `exe.sh` is the main script running the process exporter.
-3. `process-exporter-config.yml` is the template of configuration file for the process-exporter.
+1. `get_cmd.sh` is used to read `pid.out` and generate the configuration file for the process-exporter. 
+2. `process-exporter-config.yml` is the template of configuration file for the process-exporter.
+3. `exe.sh` is the main script running the process exporter.
 
 
 ## Commands in the user's pod configuration file
@@ -49,16 +49,16 @@ Here, we decompose it into **3 parts** for clarity. The example pod configuratio
 2. Launch the process-exporter container with the environment variables set.
     
 ```
-(export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &)
+(export PROCESS_EXPORTER_PORT=1911 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &)
 ```
 ```
 PROCESS_EXPORTER_PORT: export the port number of the process-exporter container
 PROM_SERVER: export the address of the prometheus server
 ```
 
-3. Port-forward the process-exporter port to the host. 
+3. Port-forward the process-exporter port to the host.
 ```
-(export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)
+(export PROCESS_EXPORTER_PORT=1911 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)
 ```
 
 # Configuration of the process-exporter
