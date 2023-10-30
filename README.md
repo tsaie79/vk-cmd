@@ -83,6 +83,9 @@ To deploy job pods, follow these steps:
 ## Use kubernetes API to get information about the cluster
 Please see `tools/kubernetes-api/readme.md` for details.
 
+# Monitoring via Prometheus process exporter
+See `prom/README.md` for details.
 
-## References
+
+# References
 The implementation of `vk-cmd` is based on the mock provider in [Virtual Kubelet](https://github.com/virtual-kubelet/virtual-kubelet). The source code of this repository is stored in [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd). The `vk-cmd` image is built using the Dockerfile in this repository and refers to [KinD](https://github.com/kubernetes-sigs/kind). The image is stored in [Docker Hub](https://hub.docker.com/repository/docker/jlabtsai/vk-cmd). 
