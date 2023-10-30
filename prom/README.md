@@ -61,5 +61,9 @@ PROM_SERVER: export the address of the prometheus server
 (export PROCESS_EXPORTER_PORT=1911 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)
 ```
 
-# Configuration of the process-exporter
+# Configuration of the process-exporter and prometheus server
+## Process-exporter configuration
 The `name: "{{.ExeBase}};{{.Username}};{{.PID}}"` in the `process-exporter-config.yml` is used to group the target processes. This should be changed to the user's need. 
+
+## Prometheus server configuration
+The `prometheus.yml` file in the `prom` directory is the configuration file for the prometheus server. The `job_name` in the `scrape_configs` section should be changed to the user's need. The targets should be the addresses of the process-exporter containers.
