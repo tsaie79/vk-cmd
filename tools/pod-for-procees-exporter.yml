@@ -11,11 +11,14 @@ spec:
     command:
 
       # random
-      # - "echo '(setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1911 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &) && (export PROCESS_EXPORTER_PORT=1911 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)' > $HOME/hostpipe/vk-cmd"
+      # - "echo '(setsid shifter --image=docker:jlabtsai/random:v20231026 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1912 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &) && (export PROCESS_EXPORTER_PORT=1912 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)' > $HOME/hostpipe/vk-cmd"
       
       # stress
-      - "echo '(setsid shifter --image=docker:jlabtsai/stress:v20231026 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &) && (export PROCESS_EXPORTER_PORT=1913 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)' > $HOME/hostpipe/vk-cmd"
- 
+      ## p = 3
+      # - "echo '(setsid shifter --image=docker:jlabtsai/stress:v20231026 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1912 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &) && (export PROCESS_EXPORTER_PORT=1912 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)' > $HOME/hostpipe/vk-cmd"
+      ## p = 4
+      - "echo '(setsid shifter --image=docker:jlabtsai/stress:p64 --entrypoint& echo $! > ~/pid.out) && (export PROCESS_EXPORTER_PORT=1912 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && setsid shifter --image=jlabtsai/process-exporter:v1.0 -V /proc:/host_proc --entrypoint &) && (export PROCESS_EXPORTER_PORT=1912 && export PROM_SERVER=jeng-yuantsai@72.84.73.170 && ssh -NfR $PROCESS_EXPORTER_PORT:localhost:$PROCESS_EXPORTER_PORT $PROM_SERVER)' > $HOME/hostpipe/vk-cmd"
+
     resources:
       limits: 
         cpu: 1 #upper limit
