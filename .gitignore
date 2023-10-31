@@ -3,3 +3,10 @@
 config
 *.docx
 prom/data/*
+
+
+swif/*.err
+swif/*.out
+swif/*.txt
+swif/nersc.sh
+swif/sshproxy.sh
