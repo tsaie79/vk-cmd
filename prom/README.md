@@ -7,28 +7,28 @@ To use process-exporter, one needs to know the PIDs of the processes to be monit
 `setid` is a command that launches a process in a new session. It is useful for this purpose because it makes the container the session leader, and all processes in the container are children of the session leader. This makes it easy to find the PIDs of all processes in the container.
 
 ```
-setsid shifter docker-img & echo $! >> pid.out
+setsid shifter docker-img & echo $! >> sid.out
 ```
 For example: 
 ```
-setsid shifter --image=docker:jlabtsai/read-resources:latest -- stress-ng -c 2 --timeout 100 & echo $! >> pid.out
+setsid shifter --image=docker:jlabtsai/read-resources:latest -- stress-ng -c 2 --timeout 100 & echo $! >> sid.out
 ```
 
 ## 2. Find the PIDs of all processes in the container
-The `pid.out` file contains the **PID/PID-1** of the leader process of the container. To find the PIDs of all processes (including the leader) in the container, run the following command:
+The `sid.out` file contains the **PID/PID-1** of the leader process of the container. To find the PIDs of all processes (including the leader) in the container, run the following command:
 ```
-pgrep -s $(cat pid.out)
+pgrep -s $(cat sid.out)
 ```
-**Warning**: The number shown in `pid.out` can represent different things:
+**Warning**: The number shown in `sid.out` can represent different things:
 - If the container is launche via `vk-cmd`, then it is the PID of the leader process of the container.
-- If the container is launched directly from `shifter` on the shell, then `number-in-pid.out + 1` is the PID of the leader process of the container.
+- If the container is launched directly from `shifter` on the shell, then `number-in-sid.out + 1` is the PID of the leader process of the container.
 
 
 # Run process-exporter along with the user's pod
-The process-exporter image used in this example is built from the Dockerfile in this directory. This works with the existing file `$HOME/pid.out` containing the leader PID of the container when launching the pod. If the file is not present, the process-exporter will not work.
+The process-exporter image used in this example is built from the Dockerfile in this directory. This works with the existing file `$HOME/sid.out` containing the leader PID of the container when launching the pod. If the file is not present, the process-exporter will not work.
 
 ## Files to build the process-exporter image
-1. `get_cmd.sh` is used to read `pid.out` and generate the configuration file for the process-exporter. 
+1. `get_cmd.sh` is used to read `sid.out` and generate the configuration file for the process-exporter. 
 2. `process-exporter-config.yml` is the template of configuration file for the process-exporter.
 3. `exe.sh` is the main script running the process exporter.
 
@@ -40,10 +40,10 @@ It is a **one liner command** in the `command` field of the pod configuration fi
 Here, we decompose it into **3 parts** for clarity. The example pod configuration file is `pod-for-procees-exporter.yml`.
 
 
-1. When user's pod is launched via `vk-cmd`, the `$HOME/pid.out` must be created and the PID of the leader process of the pod must be written to it. 
+1. When user's pod is launched via `vk-cmd`, the `$HOME/sid.out` must be created and the PID of the leader process of the pod must be written to it. 
 
 ```
-(setsid shifter --image=docker:jlabtsai/stress:v20231026 --entrypoint& echo $! > ~/pid.out)
+(setsid shifter --image=docker:jlabtsai/stress:v20231026 --entrypoint& echo $! > ~/sid.out)
 ```
 
 2. Launch the process-exporter container with the environment variables set.
