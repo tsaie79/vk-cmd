@@ -5,7 +5,7 @@
 
 cp /config.yml $HOME/config.yml
 
-for pid in $(pgrep -s `cat $HOME/pid.out`);
+for pid in $(pgrep -s `cat $HOME/sid.out`);
 do
     export cmd=$(cat /proc/$pid/stat | awk '{print $2}' | sed 's/(//g' | sed 's/)//g')
     echo $cmd
