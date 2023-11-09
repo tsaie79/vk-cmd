@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export VK_PATH="/vk-cmd"
-export KUBECONFIG="$VK_PATH/config"
+# export KUBECONFIG="$VK_PATH/config"
 export VKUBELET_POD_IP="10.250.64.71"
 export APISERVER_CERT_LOCATION="$VK_PATH/client.crt"
 export APISERVER_KEY_LOCATION="$VK_PATH/client.key"
