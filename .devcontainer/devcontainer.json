@@ -23,6 +23,7 @@
 
 	"runArgs": [
 		"--network=host",
+		"--shm-size=50gb"
 	],
 	
 	"mounts": [
