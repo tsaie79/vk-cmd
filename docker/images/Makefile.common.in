@@ -36,7 +36,7 @@ OUTPUT?=
 PROGRESS=auto
 EXTRA_BUILD_OPT?=
 build: ensure-buildx
-	docker buildx build $(if $(PLATFORMS),--platform=$(PLATFORMS),) $(OUTPUT) --progress=$(PROGRESS) -t ${IMAGE} --pull --build-arg GO_VERSION=$(GO_VERSION) $(EXTRA_BUILD_OPT) .
+	docker buildx build $(if $(PLATFORMS),--platform=$(PLATFORMS),) $(OUTPUT) --progress=$(PROGRESS) --no-cache -t ${IMAGE} --pull --build-arg GO_VERSION=$(GO_VERSION) $(EXTRA_BUILD_OPT) .
 
 # push the cross built image
 push: OUTPUT=--push
