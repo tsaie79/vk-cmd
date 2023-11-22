@@ -1,7 +1,4 @@
 # Feature in this branch
 
-When launching vk-cmd using container runtime, you can define the environment variable `KUBECONFIG` to point to a custom kubeconfig file.
-
-```bash
-export KUBECONFIG=/path/to/kubeconfig
-```
+- [x] User's choice of the kubeconfig file, using the environment variable `KUBECONFIG`.
+- [x] ConfigMap and Secret as volume type is supported. See [virtual-kubelet-cmd/add-volume](https://github.com/tsaie79/virtual-kubelet-cmd/tree/add-volume) branch for more details.
