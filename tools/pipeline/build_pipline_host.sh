@@ -16,3 +16,6 @@ fi
 while true; do
     eval "$(cat $HOME/hostpipe/vk-cmd)" > $HOME/hostpipe/pipeline.out 2> $HOME/hostpipe/pipeline.err
 done
+
+# maybe we cat revise it to:
+## while true; do bash -s < fifo 1> stdout 2> stderr; done
