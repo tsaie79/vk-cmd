@@ -9,4 +9,7 @@ export KUBELET_PORT="10250"
 
 echo "{\"$NODENAME\": {\"cpu\": \"0\", \"memory\": \"0Gi\", \"pods\": \"0\"}}" > $HOME/.host-cfg.json
 
+
+cp $VK_PATH/read_from_fifo $HOME/read_from_fifo
+
 "$VK_PATH/virtual-kubelet" --nodename $NODENAME --provider mock --provider-config $HOME/.host-cfg.json --klog.v 3 > $HOME/$NODENAME.log 2>&1
