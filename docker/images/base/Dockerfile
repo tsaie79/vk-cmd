@@ -29,11 +29,16 @@ RUN git clone -b $VK_BRANCH "${VK_CMD_REPO_URL}" /vk-cmd \
     && make clean \
     && make build
 
+RUN cd /vk-cmd/fifo \
+    && eval "$(gimme "${GO_VERSION}")" \
+    && export GOARCH=$TARGETARCH \
+    && go build -o /vk-cmd/read_from_fifo read_from_fifo.go
 
 # build final image layout from other stages
 FROM base as build
 # COPY --from=build-vk-cmd /vk-cmd/vk/vk-mock/docker/activate/* /vk-cmd/
 COPY --from=build-vk-cmd /vk-cmd/bin/virtual-kubelet /vk-cmd/
+COPY --from=build-vk-cmd /vk-cmd/read_from_fifo /vk-cmd/
 COPY --chmod=0755 activate/* /vk-cmd/
 RUN chmod +x /vk-cmd/start.sh
 
