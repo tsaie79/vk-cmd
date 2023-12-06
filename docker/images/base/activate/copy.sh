@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cp -r /vk-cmd /root/vk-cmd
+cp -r /vk-cmd $HOME/
