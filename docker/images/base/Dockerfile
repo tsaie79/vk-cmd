@@ -19,9 +19,10 @@ RUN eval "$(gimme "${GO_VERSION}")" \
 
 
 FROM go-build as build-vk-cmd
-ARG VK_CMD_REPO_URL="https://github.com/tsaie79/virtual-kubelet-cmd.git"
 ARG TARGETARCH GO_VERSION
-RUN git clone -b add-volume "${VK_CMD_REPO_URL}" /vk-cmd \
+ARG VK_CMD_REPO_URL="https://github.com/tsaie79/virtual-kubelet-cmd.git"
+ARG VK_CMD_BRANCH="no-vk-container"
+RUN git clone -b "${VK_CMD_BRANCH}" "${VK_CMD_REPO_URL}" /vk-cmd \
     && cd /vk-cmd \
     && eval "$(gimme "${GO_VERSION}")" \
     && export GOARCH=$TARGETARCH \
@@ -35,7 +36,6 @@ FROM base as build
 COPY --from=build-vk-cmd /vk-cmd/bin/virtual-kubelet /vk-cmd/
 COPY --chmod=0755 activate/* /vk-cmd/
 RUN chmod +x /vk-cmd/start.sh
-RUN chmod +x /vk-cmd/copy.sh
 
 # how to bind a from host to b from container: docker run -it -v a:b IMAGE_NAME bash
 
@@ -44,6 +44,4 @@ FROM scratch
 # copy built binaries from build stage to final image layout and set entrypoint to virtual-kubelet binary by default (can be overridden)
 COPY --from=build / /
 
-# run env.sh
-ENTRYPOINT ["/vk-cmd/copy.sh"]
-# CMD ["/vk-cmd/start.sh"]
+ENTRYPOINT ["/bin/sh"]
