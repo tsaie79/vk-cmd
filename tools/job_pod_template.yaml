@@ -6,6 +6,7 @@ metadata:
 data:
   stress.sh: |
     #!/bin/bash
+    echo $MYNAME
     shifter --image="jlabtsai/stress:latest" --entrypoint
 
 ---
@@ -26,6 +27,8 @@ spec:
         - name: TIME
           value: "60"
         - name: workdir
+          value: "~/stress/job1"
+        - name: MYNAME
           value: "~/stress/job1"
 
       volumeMounts:
