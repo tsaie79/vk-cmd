@@ -1,18 +1,18 @@
 #!/bin/bash
 
-
+## ssh tunnel
 
 ## name node
-export NODENAME="vk-mylin"
-export KUBECONFIG="~/.kube/config"
+export NODENAME="vk-direct-lin"
+export KUBECONFIG="/home/jeng-yuantsai/.kube/config"
 
-## ssh tunnel
-ssh -NfL 33469:localhost:33469 mylin
 
 ## run vk-cmd
 container_id=$(docker run -itd --rm jlabtsai/vk-cmd:no-vk-container)
-docker cp ${container_id}:/vk-cmd `pwd`
+docker cp ${container_id}:/vk-cmd `pwd` && docker stop ${container_id}
 
 cd `pwd`/vk-cmd
 
-./start.sh $KUBECONFIG $NODENAME
+./start.sh "$KUBECONFIG" "$NODENAME"&
+
+echo "api-server config: $KUBECONFIG; nodename: $NODENAME is runnning..."
