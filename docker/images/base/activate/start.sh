@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export VKUBELET_POD_IP="10.250.64.71"
+export VKUBELET_POD_IP=$3 
 export APISERVER_CERT_LOCATION="client.crt"
 export APISERVER_KEY_LOCATION="client.key"
-export KUBELET_PORT="10250"
+export KUBELET_PORT=$4 #"10250"
 
 # export KUBECONFIG="config"
 # export NODENAME="vk-cmd"
