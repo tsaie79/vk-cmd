@@ -3,8 +3,8 @@
 ## ssh tunnel
 
 ## name node
-export NODENAME="vk-direct-lin"
-export KUBECONFIG="/home/jeng-yuantsai/.kube/config"
+export NODENAME="vk"
+export KUBECONFIG="$HOME/.kube/config"
 export VKUBELET_POD_IP="127.0.0.1"
 export KUBELET_PORT="10250"
 
