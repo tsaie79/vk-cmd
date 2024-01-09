@@ -10,7 +10,8 @@ export KUBELET_PORT="10261"
 
 
 ssh -NfL $APISERVER_PORT:localhost:$APISERVER_PORT $CONTROL_PLANE_IP
-ssh -NfR $KUBELET_PORT:localhost:$KUBELET_PORT $CONTROL_PLANE_IP # To make sure the port is open to all interfaces, one has to set GatewayPorts to yes in /etc/ssh/sshd_config and run sudo service ssh restart at mylin.
+ssh -NfR *:$KUBELET_PORT:localhost:$KUBELET_PORT $CONTROL_PLANE_IP 
+# To make sure the port is open to all interfaces, one has to set GatewayPorts to yes in /etc/ssh/sshd_config and run sudo service ssh restart at mylin.
 
 shifter --image=docker:jlabtsai/vk-cmd:add-control -- /bin/bash -c "cp -r /vk-cmd `pwd`"
 
