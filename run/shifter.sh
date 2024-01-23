@@ -1,26 +1,26 @@
 #!/bin/bash
 
-export CONTROL_PLANE_IP="mylin"
-export APISERVER_PORT="46859"
+export CONTROL_PLANE_IP="jiriaf2301"
+export APISERVER_PORT="43727"
 export NODENAME="vk-nersc"
 export KUBECONFIG="/global/homes/j/jlabtsai/run-vk/kubeconfig/$CONTROL_PLANE_IP"
 export VKUBELET_POD_IP="172.17.0.1"
-export KUBELET_PORT="10261"
+export KUBELET_PORT="10251"
 
 # check if ssh tunnel is running, if not, start it as a follow
 if [ -z "$(ps -ef | grep $APISERVER_PORT | grep -v grep)" ]; then
-    echo "ssh tunnel is not running, start it as a follow"
+    echo "Forwarding port $APISERVER_PORT to $CONTROL_PLANE_IP"
     ssh -NfL $APISERVER_PORT:localhost:$APISERVER_PORT $CONTROL_PLANE_IP
 else
-    echo "ssh tunnel is running"
+    echo "Forwarding port $APISERVER_PORT to $CONTROL_PLANE_IP is running"
 fi
 
 
 if [ -z "$(ps -ef | grep $KUBELET_PORT | grep -v grep)" ]; then
-    echo "ssh tunnel is not running, start it as a follow"
-    ssh -NfR *:$KUBELET_PORT:localhost:$KUBELET_PORT $CONTROL_PLANE_IP 
+    echo "Reverse forwarding port $KUBELET_PORT to $CONTROL_PLANE_IP"
+    ssh -NfR *:$KUBELET_PORT:localhost:$KUBELET_PORT $CONTROL_PLANE_IP
 else
-    echo "ssh tunnel is running"
+    echo "Reverse forwarding port $KUBELET_PORT to $CONTROL_PLANE_IP is running"
 fi
 
 
