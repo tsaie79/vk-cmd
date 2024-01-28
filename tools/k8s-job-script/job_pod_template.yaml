@@ -45,8 +45,9 @@ data:
     dat
     # date
     # Test conflict of start and getpod:
-    # sleep $1 && dat
+    sleep $1 && dat
     # sleep $1 && date
+
 
 ---
 
@@ -68,18 +69,21 @@ spec:
         limits:
           cpu: "1"
           memory: 1Gi
-    # - name: job2
-    #   image: direct-stress
-    #   command: ["bash"]
-    #   args: ["10", "2"]
-    #   volumeMounts:
-    #     - name: direct-stress
-    #       mountPath: stress/job2
-    #   resources:
-    #     limits:
-    #       cpu: "1"
-    #       memory: 1Gi
+    - name: job2
+      image: shifter-stress
+      command: ["bash"]
+      args: ["10", "2"]
+      volumeMounts:
+        - name: shifter-stress
+          mountPath: stress/job2
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
   volumes:
+    - name: shifter-stress
+      configMap:
+        name: shifter-stress
     - name: direct-stress 
       configMap:
         name: direct-stress
@@ -88,7 +92,23 @@ spec:
         name: test
   nodeSelector:
     kubernetes.io/role: agent
-    kubernetes.io/hostname: vk
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "perlmutter"
+          # - key: jiriaf.alivetime
+          #   operator: Gt
+          #   values:
+          #   - "30"
   tolerations:
     - key: "virtual-kubelet.io/provider"
       value: "mock"
