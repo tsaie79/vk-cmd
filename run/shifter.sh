@@ -7,7 +7,7 @@ export KUBECONFIG="/global/homes/j/jlabtsai/run-vk/kubeconfig/$CONTROL_PLANE_IP"
 export VKUBELET_POD_IP="172.17.0.1"
 export KUBELET_PORT="10251"
 
-export JIRIAF_WALLTIME="120"
+export JIRIAF_WALLTIME="120" # should be multiple of 60 and in seconds. if 0, then no walltime limit
 export JIRIAF_NODETYPE="gpu"
 export JIRIAF_SITE="Local"
 
@@ -27,6 +27,8 @@ else
     echo "Reverse forwarding port $KUBELET_PORT to $CONTROL_PLANE_IP is running"
 fi
 
+## echo walltime, nodetype, site
+echo "walltime: $JIRIAF_WALLTIME; nodetype: $JIRIAF_NODETYPE; site: $JIRIAF_SITE"
 
 # ssh -NfL $APISERVER_PORT:localhost:$APISERVER_PORT $CONTROL_PLANE_IP
 # ssh -NfR *:$KUBELET_PORT:localhost:$KUBELET_PORT $CONTROL_PLANE_IP 
