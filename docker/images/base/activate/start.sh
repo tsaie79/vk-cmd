@@ -8,4 +8,8 @@ export KUBELET_PORT=$4 #"10250"
 export KUBECONFIG=$1
 export NODENAME=$2
 
+export JIRIAF_WALLTIME=$5
+export JIRIAF_NODETYPE=$6
+export JIRIAF_SITE=$7
+
 ./virtual-kubelet --kubeconfig $KUBECONFIG --nodename $NODENAME --provider mock --klog.v 3 > $2.log 2>&1
