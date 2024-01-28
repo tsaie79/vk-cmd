@@ -7,6 +7,10 @@ export KUBECONFIG="/global/homes/j/jlabtsai/run-vk/kubeconfig/$CONTROL_PLANE_IP"
 export VKUBELET_POD_IP="172.17.0.1"
 export KUBELET_PORT="10251"
 
+export JIRIAF_WALLTIME="120"
+export JIRIAF_NODETYPE="gpu"
+export JIRIAF_SITE="Local"
+
 # check if ssh tunnel is running, if not, start it as a follow
 if [ -z "$(ps -ef | grep $APISERVER_PORT | grep -v grep)" ]; then
     echo "Forwarding port $APISERVER_PORT to $CONTROL_PLANE_IP"
@@ -35,4 +39,4 @@ cd `pwd`/vk-cmd
 echo "api-server config: $KUBECONFIG; nodename: $NODENAME is runnning..."
 echo "vk ip: $VKUBELET_POD_IP from view of metrics server; vk kubelet port: $KUBELET_PORT"
 
-./start.sh $KUBECONFIG $NODENAME $VKUBELET_POD_IP $KUBELET_PORT
+./start.sh $KUBECONFIG $NODENAME $VKUBELET_POD_IP $KUBELET_PORT $JIRIAF_WALLTIME $JIRIAF_NODETYPE $JIRIAF_SITE
