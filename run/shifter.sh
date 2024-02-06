@@ -39,6 +39,6 @@ shifter --image=docker:jlabtsai/vk-cmd:add-control -- /bin/bash -c "cp -r /vk-cm
 cd `pwd`/vk-cmd
 
 echo "api-server config: $KUBECONFIG; nodename: $NODENAME is runnning..."
-echo "vk ip: $VKUBELET_POD_IP from view of metrics server; vk kubelet port: $KUBELET_PORT"
+echo "api-server interface is running at $VKUBELET_POD_IP; vk kubelet port: $KUBELET_POR"
 
 ./start.sh $KUBECONFIG $NODENAME $VKUBELET_POD_IP $KUBELET_PORT $JIRIAF_WALLTIME $JIRIAF_NODETYPE $JIRIAF_SITE
