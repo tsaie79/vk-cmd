@@ -23,7 +23,7 @@ This section defines several environment variables essential for configuring the
 | --------------- | ----------- |
 | `NODENAME` | The name of the node in the Kubernetes cluster. |
 | `KUBECONFIG` | Points to the location of the Kubernetes configuration file, which is used to connect to the Kubernetes API server. By default, it's located at `$HOME/.kube/config`. |
-| `VKUBELET_POD_IP` | The IP address of the node that is used to connect to the Kubernetes API server. If the API server is running in a Docker container, this is typically the IP address of the `docker0` interface. |
+| `VKUBELET_POD_IP` | The IP address of the VK that metrics server talks to. If the metrics server is running in a Docker container and VK is running on the same host, this is typically the IP address of the `docker0` interface. |
 | `KUBELET_PORT` | The port on which the Kubelet service is running. The default port for Kubelet is 10250. This is for the metrics server and should be unique for each node. |
 | `JIRIAF_WALLTIME` | Sets a limit on the total time that a node can run. It should be a multiple of 60 and is measured in seconds. If it's set to 0, there is no time limit. |
 | `JIRIAF_NODETYPE` | Specifies the type of node that the job will run on. This is just for labeling purposes and doesn't affect the actual job. |
