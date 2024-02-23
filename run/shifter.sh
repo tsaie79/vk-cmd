@@ -34,7 +34,7 @@ echo "walltime: $JIRIAF_WALLTIME; nodetype: $JIRIAF_NODETYPE; site: $JIRIAF_SITE
 # ssh -NfR *:$KUBELET_PORT:localhost:$KUBELET_PORT $CONTROL_PLANE_IP 
 # To make sure the port is open to all interfaces, one has to set GatewayPorts to yes in /etc/ssh/sshd_config and run sudo service ssh restart at mylin.
 
-shifter --image=docker:jlabtsai/vk-cmd:add-control -- /bin/bash -c "cp -r /vk-cmd `pwd`"
+shifter --image=docker:jlabtsai/vk-cmd:main -- /bin/bash -c "cp -r /vk-cmd `pwd`"
 
 cd `pwd`/vk-cmd
 
