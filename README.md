@@ -58,5 +58,5 @@ Once the environment variables are configured and the SSH tunnels are establishe
 Please see `tools/kubernetes-api/readme.md` for details.
 
 
-## References
-The implementation of `vk-cmd` is based on the mock provider in [Virtual Kubelet](https://github.com/virtual-kubelet/virtual-kubelet). The source code of this repository is stored in [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd). The `vk-cmd` image is built using the Dockerfile in this repository and refers to [KinD](https://github.com/kubernetes-sigs/kind). The image is stored in [Docker Hub](https://hub.docker.com/repository/docker/jlabtsai/vk-cmd). 
+## Related Resources
+The `vk-cmd` implementation is inspired by the mock provider in the [Virtual Kubelet](https://github.com/virtual-kubelet/virtual-kubelet) project. The source code for `vk-cmd` can be found in the [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd) repository. The Dockerfile used to build the `vk-cmd` image is based on the guidelines from the [KinD](https://github.com/kubernetes-sigs/kind) project. The built image is hosted on [Docker Hub](https://hub.docker.com/repository/docker/jlabtsai/vk-cmd).
