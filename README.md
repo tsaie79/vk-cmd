@@ -4,14 +4,14 @@ This repository contains the Docker image for [virtual-kubelet-cmd](https://gith
 # Overview
 This repository hosts the `virtual-kubelet-cmd` binary and its required files. When a container is created from this image, it generates a `vk-cmd` directory. The binary and its related files are subsequently transferred into this directory. To execute `vk-cmd`, users can use the scripts found in the `run` directory.
 
-# Building the Docker Image
-The Dockerfile for this project is found in the `docker/images/base/Dockerfile` directory. To construct the Docker image, execute the command `make quick` in your terminal.
+# Docker Image Construction
+The Dockerfile used to build the image for this project is located at `docker/images/base/Dockerfile`. To build the Docker image, run the `make quick` command in your terminal.
 
-# Run vk-cmd
-To launch `vk-cmd`, follow these steps:
-1. Set up the environment variables.
-2. Build SSH tunnels, if necessary.
-3. Run `start.sh` in `vk-cmd` directory.
+# Executing vk-cmd
+To execute `vk-cmd`, adhere to the following procedure:
+1. Configure the required environment variables.
+2. Establish SSH tunnels, if they are not already in place.
+3. Execute the `start.sh` script located in the `vk-cmd` directory.
 
 **Note** Scripts for ruunning vk-cmd are located in the `run` directory.
 
@@ -45,32 +45,13 @@ Once the environment variables are configured and the SSH tunnels are establishe
 ./start.sh $KUBECONFIG $NODENAME $VKUBELET_POD_IP $KUBELET_PORT $JIRIAF_WALLTIME $JIRIAF_NODETYPE $JIRIAF_SITE
 ```
 
-# Tables
-## Table 1: Scenarios when launching vk-cmd
+# Environment Characteristics for vk-cmd Launch Scenarios
 
-|                    | CRI       | Available $HOME in container | Need to bind pipeline located at $HOME/hostpipe/vk-cmd | Available host network in container | Available env variables from host shell |
-|--------------------|-----------|------------------------------|---------------------------------------------------------|-------------------------------------|-----------------------------------------|
-| Jiriaf2301         | Docker    | No                           | Yes                           | No                                  | No                                      |
-| ifarm              | Apptainer | Yes                          | No                                                      | Yes                                 | Yes                                     |
-| Perlmutter (NERSC) | Shifter   | Yes                          | No                                                      | Yes                                 | Yes                                     |
-
-## Table 2: Steps of running vk-cmd image
-
-|                    | Step 0                                        | Step 1                           | Step 2                | Step 3                                                                                                  |
-|--------------------|-----------------------------------------------|----------------------------------|-----------------------|---------------------------------------------------------------------------------------------------------|
-| Jiriaf2301         | Build SSH tunnel from worker to control plane | Build pipeline in the background | setenv NODENAME vk-xxx | docker run -d -v $HOME/hostpipe:/root/hostpipe --network="host" -e NODENAME=$NODENAME jlabtsai/vk-cmd:tag |
-| ifarm              |                                               |                                  |                       | apptainer run docker://jlabtsai/vk-cmd:tag                                                              |
-| Perlmutter (NERSC) |                                               |                                  | export NODENAME=vk-xxx | shifter --image=docker:jlabtsai/vk-cmd:tag --entrypoint                                               |
-
-
-
-## Table 3: Shell cmds in job pod YAML to run images
-
-|                    | The Spec.Containers[0].Command in pod YAML to run image app                                                             |
-|--------------------|-------------------------------------------------------------------------------------------------|
-| Jiriaf2301         | "echo 'docker run godlovedc/lolcow:latest' > /root/hostpipe/vk-cmd"                               |
-| ifarm              | "echo 'apptainer run docker://sylabsio/lolcow:latest' > $HOME/hostpipe/vk-cmd"   |
-| Perlmutter (NERSC) | "echo 'shifter --image=godlovedc/lolcow:latest --entrypoint' > $HOME/hostpipe/vk-cmd" |
+| Environment        | Container Runtime Interface (CRI) | Is Host Network Available in Container? | Are Host Shell Environment Variables Available? |
+|--------------------|-----------------------------------|-----------------------------------------|-------------------------------------------------|
+| Jiriaf2301         | Docker                            | No                                      | No                                              |
+| ifarm              | Apptainer                         | Yes                                     | Yes                                             |
+| Perlmutter (NERSC) | Shifter                           | Yes                                     | Yes                                             |
 
 
 # Use kubernetes API to get information about the cluster
