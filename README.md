@@ -1,5 +1,5 @@
-# Docker image of virtual-kubelet-cmd
-Vk-cmd is the Docker image of [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd), which is a BASH command provider for Virtual Kubelet. The image is built with reference to [KinD](https://github.com/kubernetes-sigs/kind).
+# Docker Image for Virtual-Kubelet-Cmd
+This repository contains the Docker image for [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd), a BASH command provider for Virtual Kubelet. The image construction process is based on the [KinD](https://github.com/kubernetes-sigs/kind) project guidelines.
 
 # Purpose
 This repository contains the `virtual-kubelet-cmd` binary along with its necessary files. When a container is instantiated from this image, a `vk-cmd` directory is created. The binary and its associated files are then copied into this directory. Users execute `vk-cmd` by utilizing the scripts located in the `run` directory.
