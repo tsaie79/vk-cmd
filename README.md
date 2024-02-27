@@ -94,5 +94,5 @@ echo "walltime: $JIRIAF_WALLTIME; nodetype: $JIRIAF_NODETYPE; site: $JIRIAF_SITE
 Please see `tools/kubernetes-api/readme.md` for details.
 
 
-## Related Resources
+# Related Resources
 The `vk-cmd` implementation is inspired by the mock provider in the [Virtual Kubelet](https://github.com/virtual-kubelet/virtual-kubelet) project. The source code for `vk-cmd` can be found in the [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd) repository. The Dockerfile used to build the `vk-cmd` image is based on the guidelines from the [KinD](https://github.com/kubernetes-sigs/kind) project. The built image is hosted on [Docker Hub](https://hub.docker.com/repository/docker/jlabtsai/vk-cmd).
