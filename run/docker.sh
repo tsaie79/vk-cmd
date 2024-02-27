@@ -14,9 +14,10 @@ export JIRIAF_SITE="mylin"
 
 ## run vk-cmd
 ### update the image to the latest version
-docker pull jlabtsai/vk-cmd:main
+export VK_CMD_IMAGE="jlabtsai/vk-cmd:main"
+docker pull $VK_CMD_IMAGE
 
-container_id=$(docker run -itd --rm jlabtsai/vk-cmd:add-control)
+container_id=$(docker run -itd --rm --name vk-cmd $VK_CMD_IMAGE)
 docker cp ${container_id}:/vk-cmd `pwd` && docker stop ${container_id}
 
 cd `pwd`/vk-cmd
