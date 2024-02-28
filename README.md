@@ -1,5 +1,5 @@
 # Docker Image for Virtual-Kubelet-Cmd
-This repository contains the Docker image for [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd), a BASH command provider for Virtual Kubelet. The image construction process is based on the [KinD](https://github.com/kubernetes-sigs/kind) project guidelines.
+This repository hosts the Docker image for [virtual-kubelet-cmd](https://github.com/tsaie79/virtual-kubelet-cmd). Virtual-kubelet-cmd is a BASH command provider for Virtual Kubelet. You can find the Docker image on [Docker Hub](https://hub.docker.com/repository/docker/jlabtsai/vk-cmd).
 
 # Overview
 This repository hosts the `virtual-kubelet-cmd` binary and its required files. When a container is created from this image, it generates a `vk-cmd` directory. The binary and its related files are subsequently transferred into this directory. To execute `vk-cmd`, users can use the scripts found in the `run` directory.
