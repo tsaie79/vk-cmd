@@ -21,7 +21,7 @@ RUN eval "$(gimme "${GO_VERSION}")" \
 FROM go-build as build-vk-cmd
 ARG TARGETARCH GO_VERSION
 ARG VK_CMD_REPO_URL="https://github.com/tsaie79/virtual-kubelet-cmd.git"
-ARG VK_CMD_BRANCH="add-control"
+ARG VK_CMD_BRANCH="main"
 RUN git clone -b "${VK_CMD_BRANCH}" "${VK_CMD_REPO_URL}" /vk-cmd \
     && cd /vk-cmd \
     && eval "$(gimme "${GO_VERSION}")" \
