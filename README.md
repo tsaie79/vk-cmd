@@ -110,7 +110,7 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: some-name # Job Name Here
+  name: p # Job Name Here
 spec:
   containers:
     - name: c1
