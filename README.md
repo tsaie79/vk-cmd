@@ -90,6 +90,175 @@ echo "walltime: $JIRIAF_WALLTIME; nodetype: $JIRIAF_NODETYPE; site: $JIRIAF_SITE
 | Perlmutter (NERSC) | Shifter                           | Yes                                     | Yes                                             |
 
 
+
+# Job Scripts 
+Job scripts include the definitions for both the `configMap` and the `pod` associated with a particular job.
+## Computing Sites Running Containers in User Space (Common in HPC Environments Using Singularity or Shifter)
+
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: shifter-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    export NUMBER=$2
+    export TIME=$1
+    shifter --image="jlabtsai/stress:latest" --entrypoint
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-name # Job Name Here
+spec:
+  containers:
+    - name: c1
+      image: shifter-stress
+      command: ["bash"]
+      args: ["300", "2"] # Time and cpu should go here
+      volumeMounts:
+        - name: shifter-stress
+          mountPath: shifter-stress
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "1" # Number of CPUs Here as well
+          memory: 1Gi # Memory Here 
+  volumes:
+    - name: shifter-stress
+      configMap:
+        name: shifter-stress
+  nodeSelector:
+    kubernetes.io/role: agent
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+# Below are the labels for the node, corresponding to the jiriaf labels
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "Local"
+# Below should be commented out if the JIRIAF_WALLTIME is set to 0
+    ###
+        - key: jiriaf.alivetime 
+            operator: Gt
+            values:
+            - "30"
+    ###
+  tolerations:
+    - key: "virtual-kubelet.io/provider"
+      value: "mock"
+      effect: "NoSchedule"
+  restartPolicy: Never
+```
+## Compute Sites Utilizing Docker or Other Container Runtimes Operating in Root Space
+Two containers are instantiated in this process. The first container is dedicated to the user's job, while the second container's role is to adjust the `PGID` of the first container. This adjustment ensures that metrics from the correct processes running in the first container are accurately collected.
+
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: docker-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    export PGID_FILE=$3
+    docker run -d --rm -e NUMBER=$2 -e TIME=$1 jlabtsai/stress:latest > /dev/null
+    ## find the last container id
+    export CONTAINER_ID=$(docker ps -l -q)
+    docker inspect -f '{{.State.Pid}}' $CONTAINER_ID > $3
+    sleep $1
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: get-pgid
+data:
+  stress.sh: |
+    #!/bin/bash
+    sleep 3
+    cp $1 $2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-name # Job Name Here
+spec:
+  containers:
+    - name: c1
+      image: docker-stress
+      command: ["bash"]
+      args: ["300", "2", "~/p/containers/c1/p"] # Time and cpu should go here
+      volumeMounts:
+        - name: docker-stress
+          mountPath: docker-stress
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "1" # Number of CPUs Here as well
+          memory: 1Gi # Memory Here 
+    - name: c2
+      image: get-pgid
+      command: ["bash"]
+      args: ["~/p/containers/c1/p", "~/p/containers/c1/pgid"] # Time and cpu should go here
+      volumeMounts:
+        - name: get-pgid
+          mountPath: get-pgid
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "1" # Number of CPUs Here as well
+          memory: 1Gi # Memory Here 
+  volumes:
+    - name: docker-stress
+      configMap:
+        name: docker-stress
+    - name: get-pgid
+      configMap:
+        name: get-pgid
+  nodeSelector:
+    kubernetes.io/role: agent
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions: 
+# Below are the labels for the node, corresponding to the jiriaf labels
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "Local"
+# Below should be commented out if the JIRIAF_WALLTIME is set to 0
+    ###
+        - key: jiriaf.alivetime 
+            operator: Gt
+            values:
+            - "30"
+    ###
+  tolerations:
+    - key: "virtual-kubelet.io/provider"
+      value: "mock"
+      effect: "NoSchedule"
+  restartPolicy: Never
+```
+
 # Use kubernetes API to get information about the cluster
 Please see `tools/kubernetes-api/readme.md` for details.
 
