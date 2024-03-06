@@ -30,13 +30,13 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: some-name # Job Name Here
+  name: p # Job Name Here
 spec:
   containers:
     - name: c1
       image: docker-stress
       command: ["bash"]
-      args: ["300", "2", "~/p/containers/c1/p"] # Time and cpu should go here
+      args: ["300", "2", "~/default/p/containers/c1/p"] # Time and cpu should go here
       volumeMounts:
         - name: docker-stress
           mountPath: docker-stress
@@ -50,7 +50,7 @@ spec:
     - name: c2
       image: get-pgid
       command: ["bash"]
-      args: ["~/p/containers/c1/p", "~/p/containers/c1/pgid"] # Time and cpu should go here
+      args: ["~/default/p/containers/c1/p", "~/default/p/containers/c1/pgid"] # Time and cpu should go here
       volumeMounts:
         - name: get-pgid
           mountPath: get-pgid
@@ -82,7 +82,7 @@ spec:
           - key: jiriaf.site
             operator: In
             values:
-            - "Local"
+            - "mylin"
   tolerations:
     - key: "virtual-kubelet.io/provider"
       value: "mock"
